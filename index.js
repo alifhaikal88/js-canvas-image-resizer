@@ -1,9 +1,10 @@
-let selectedFile = null;
-let widthInput = document.getElementById("width");
-let heightInput = document.getElementById("height");
-let resizeBtn = document.getElementById("resizeBtn");
+const widthInput = document.getElementById("width");
+const heightInput = document.getElementById("height");
+const resizeBtn = document.getElementById("resizeBtn");
 
-window.addEventListener("load", function (params) {
+let selectedFile = null;
+
+window.addEventListener("load", function () {
   disableFields(true);
 });
 
@@ -14,11 +15,15 @@ function disableFields(disabled) {
 }
 
 function resize() {
+  if (!selectedFile) {
+    alert("Please select a file first!");
+    return;
+  }
   readFile(selectedFile);
 }
 
 function changeFile(input) {
-  let file = input.files[0];
+  const file = input.files[0];
   selectedFile = file;
 
   disableFields(false);
@@ -38,20 +43,20 @@ function calculateFileSize(file) {
     return 0;
   }
 
-  let size = (file.size / (1024 * 1024)).toFixed(2);
+  const size = (file.size / (1024 * 1024)).toFixed(2);
   return size;
 }
 
 function displayFileSize(size) {
-  let elm = document.getElementById("sizeOutput");
+  const elm = document.getElementById("sizeOutput");
   elm.innerText = size;
 }
 
 function readFile(file) {
-  var reader = new FileReader();
+  const reader = new FileReader();
 
   reader.onloadend = function () {
-    processFile(reader.result, file.type);
+    processImageData(reader.result, file.type);
   };
 
   reader.onerror = function () {
@@ -61,17 +66,17 @@ function readFile(file) {
   reader.readAsDataURL(file);
 }
 
-function processFile(dataURL, fileType) {
-  var maxWidth = widthInput.value;
-  var maxHeight = heightInput.value;
+function processImageData(dataURL, fileType) {
+  const maxWidth = widthInput.value;
+  const maxHeight = heightInput.value;
 
-  var image = new Image();
+  const image = new Image();
   image.src = dataURL;
 
   image.onload = function () {
-    var width = image.width;
-    var height = image.height;
-    var shouldResize = width > maxWidth || height > maxHeight;
+    const width = image.width;
+    const height = image.height;
+    const shouldResize = width > maxWidth || height > maxHeight;
 
     if (!shouldResize) {
       console.log("Image not resize");
@@ -79,8 +84,8 @@ function processFile(dataURL, fileType) {
       return;
     }
 
-    var newWidth;
-    var newHeight;
+    let newWidth;
+    let newHeight;
 
     if (width > height) {
       newHeight = height * (maxWidth / width);
@@ -90,11 +95,11 @@ function processFile(dataURL, fileType) {
       newHeight = maxHeight;
     }
 
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.width = newWidth;
     canvas.height = newHeight;
 
-    var context = canvas.getContext("2d");
+    const context = canvas.getContext("2d");
     context.drawImage(this, 0, 0, newWidth, newHeight);
 
     dataURL = canvas.toDataURL(fileType);
@@ -107,6 +112,6 @@ function processFile(dataURL, fileType) {
 }
 
 function displayOutput(url) {
-  let output = document.getElementById("output");
+  const output = document.getElementById("output");
   output.src = url;
 }
