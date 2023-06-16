@@ -1,5 +1,7 @@
 # Image Resizer
 
+![alt text](https://github.com/alifhaikal88/js-canvas-image-resizer/blob/main/screenshot.jpeg?raw=true)
+
 This is a simple web application that allows you to resize images by specifying the maximum width and height. The application uses JavaScript to read the selected image file, resize it using HTML5 canvas, and display the resized image.
 
 ## Features
