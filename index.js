@@ -1,19 +1,22 @@
+// Get references to the DOM elements for the width, height, and resize button
 const widthInput = document.getElementById("width");
 const heightInput = document.getElementById("height");
 const resizeBtn = document.getElementById("resizeBtn");
 
+// Initialize the selectedFile variable to null, and disable the input fields and resize button on page load
 let selectedFile = null;
-
 window.addEventListener("load", function () {
   disableFields(true);
 });
 
+// Disable or enable the input fields and resize button based on the supplied parameter
 function disableFields(disabled) {
   widthInput.disabled = disabled;
   heightInput.disabled = disabled;
   resizeBtn.disabled = disabled;
 }
 
+// Event handler for the resize button. Reads and resizes the selected file if it exists.
 function resize() {
   if (!selectedFile) {
     alert("Please select a file first!");
@@ -22,6 +25,8 @@ function resize() {
   readFile(selectedFile);
 }
 
+// Event handler for the file input field. Stores the selected file and enables the input fields and resize button.
+// If the selected file is an image file, reads the file and displays its file size.
 function changeFile(input) {
   const file = input.files[0];
   selectedFile = file;
@@ -38,6 +43,7 @@ function changeFile(input) {
   }
 }
 
+// Calculates the file size of the given file in MB and returns it as a string with two decimal places.
 function calculateFileSize(file) {
   if (!file) {
     return 0;
@@ -47,11 +53,13 @@ function calculateFileSize(file) {
   return size;
 }
 
+// Displays the given file size string in the DOM element with the "sizeOutput" id.
 function displayFileSize(size) {
   const elm = document.getElementById("sizeOutput");
   elm.innerText = size;
 }
 
+// Reads the given file as a data URL and passes it to the processImageData function.
 function readFile(file) {
   const reader = new FileReader();
 
@@ -66,6 +74,7 @@ function readFile(file) {
   reader.readAsDataURL(file);
 }
 
+// Processes the given data URL as an image, resizes it if necessary, and displays the resulting image.
 function processImageData(dataURL, fileType) {
   const maxWidth = widthInput.value;
   const maxHeight = heightInput.value;
@@ -111,6 +120,7 @@ function processImageData(dataURL, fileType) {
   };
 }
 
+// Displays the given URL as an image in the DOM element with the "output" id.
 function displayOutput(url) {
   const output = document.getElementById("output");
   output.src = url;
